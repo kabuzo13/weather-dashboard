@@ -20,9 +20,10 @@ function getWeather(cityName) {
             saveSearch(data.name);
             $('.weather-display').html("<h1>" + data.name + " (" + date + ") " + "</h1>");
             var icon = $('<img>').attr('src', "https://openweathermap.org/img/wn/" + data.weather[0].icon + ".png")
-            var temp = $('<h2>').text("Temp: " + data.temp + "C");
-            var humidity = $('<h2>').text("Humidity: " + data.humidity + "%");
-            var wind = $('<h2>').text("Wind: " + data.wind + "KPH");
+            var tempC = data.main.temp - 273.15;
+            var temp = $('<h2>').text("Temp: " + tempC + "C");
+            var humidity = $('<h2>').text("Humidity: " + data.main.humidity + "%");
+            var wind = $('<h2>').text("Wind: " + data.wind.speed + "KPH");
             $('.weather-display').append(icon, temp, humidity, wind);
         })
 
