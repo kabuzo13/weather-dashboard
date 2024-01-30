@@ -1,36 +1,60 @@
 var APIkey = "c26e48ba11f2018a306fa84c728f4266";
 var city = $('#search-input');
+var searches = JSON.parse(localStorage.getItem('city')) || [];
+
+
 
 function getWeather(cityName) {
-    var cityName = city.val().trim();
+    console.log(cityName);
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIkey;
     var date = dayjs().format('DD/MM/YYYY');
     console.log(date);
     console.log(queryURL);
-    if (!cityName) return;
 
 
     fetch(queryURL)
-    .then(function (response){
-    
-    $('.weather-display').html("<h1>" + data.name + " (" + date + ") " + "</h1>");
-    $('<h2>').text("Temp: " + data.temp + "C");
-    $('<h2>').text("Humidity: " + data.humidity + "%");
-    $('<h2>').text("Wind: " + data.wind + "KPH");
-    $('.weather-display').append('h2');
-
-
-    return response.json();
-
-
-})
+        .then(function (response) {
+            return response.json();   //downloads data from external server
+        })
+        .then(function (data) {
+            saveSearch(data.name);
+            $('.weather-display').html("<h1>" + data.name + " (" + date + ") " + "</h1>");
+            var icon = $('<img>').attr('src', "https://openweathermap.org/img/wn/" + data.weather[0].icon + ".png")
+            var temp = $('<h2>').text("Temp: " + data.temp + "C");
+            var humidity = $('<h2>').text("Humidity: " + data.humidity + "%");
+            var wind = $('<h2>').text("Wind: " + data.wind + "KPH");
+            $('.weather-display').append(icon, temp, humidity, wind);
+        })
 
 }
 
 // local storage for searched cities - save to $('#history')
 
-function saveSearch() {
-
+function saveSearch(cityName) {
+    searches.push(cityName); // don't repeat cities
+    localStorage.setItem('city', JSON.stringify(searches));
+    createButtonSearches();
 }
 
-$('button').on('click', getWeather())
+function createButtonSearches() {
+    $('#history').empty();
+     // function to loop over the searches and create buttons
+    for (let i = searches.length - 1; i >= 0; i--) { //use let in for loops
+        var button = $('<button>').text(searches[i]);
+        button.on('click', function(){
+            getWeather(searches[i]);
+        })
+        $('#history').append(button);
+    }
+    
+}
+
+$('.form').on('submit', function (event) {
+    event.preventDefault();
+    var cityName = city.val().trim();
+    if (!cityName) return;
+    getWeather(cityName);
+});
+
+createButtonSearches();
+// call button function
