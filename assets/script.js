@@ -21,33 +21,36 @@ function getWeather(cityName) {
         })
         .then(function (data) {
             saveSearch(data.city.name);
-            // const forecastDays = [];
-            // const fiveDayForecast = data.list.filter(function() {
-            //     const forecastDate = new Date(data.list[i].dt_txt).getDate();
-            //     if(forecastDays.includes(forecastDate)) {
-            //         return forecastDays.push(forecastDate);
-            //     }
-            // })
-            // console.log(fiveDayForecast);
             console.log(data);
             console.log(data.city.name);
-            for (var i = 0; i < data.length && i <= 6; i++) {
-            $('.weather-display').html("<h1>" + data.city.name + " (" + date + ") " + "</h1>");
+            for (var i = 0; i < data.list[i].length; i++) {
+                // var result = data.list[i];
+            };
+            var forecastDays = [];
+            var forecastDate = new Date(data.list[i].dt_txt).getDate();
+            data.list.filter(forecast => {
+                data.list[i].dt_txt.includes(forecastDate);
+            })
+            if (forecastDays.indexOf(!forecastDate[i] === i)) {
+                forecastDays.push(forecastDate);
+            }
+            console.log(forecastDays);
+            // for (var i = 0; i < data.length && i <= 6; i++) {
+            $('#today').html("<h1>" + data.city.name + " (" + date + ") " + "</h1>");
             var icon = $('<img>').attr('src', "https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + ".png");
             var tempC = data.list[i].main.temp - 273.15;
-            var temp = $('<h2>').text("Temp: " + tempC + "C");
+            var temp = $('<h2>').text("Temp: " + Math.round(tempC) + "C");
             var humidity = $('<h2>').text("Humidity: " + data.list[i].main.humidity + "%");
             var wind = $('<h2>').text("Wind: " + data.list[i].wind.speed + "KPH");
-            $('.weather-display').append(icon, temp, humidity, wind);
-            }
+            $('#today').append(icon, temp, humidity, wind);
+            console.log();
+            // }
         })
 
 }
 
-// local storage for searched cities - save to $('#history')
-
 function saveSearch(cityName) {
-    searches.push(cityName); // don't repeat cities
+    searches.push(cityName); 
     localStorage.setItem('city', JSON.stringify(searches));
     createButtonSearches();
 }
@@ -71,6 +74,7 @@ $('.form').on('submit', function (event) {
     var cityName = city.val().trim();
     if (!cityName) return;
     getWeather(cityName);
+    getForecast();
 });
 
 createButtonSearches();
