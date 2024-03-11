@@ -37,7 +37,7 @@ function getWeather(cityName) {
                 var temp = $('<h2>').text("Temp: " + Math.round(tempC) + "C");
                 var humidity = $('<h2>').text("Humidity: " + data.list[i].main.humidity + "%");
                 var wind = $('<h2>').text("Wind: " + data.list[i].wind.speed + "KPH");
-                var card = $('<div>').addClass("card col").append("<h2>" + data.city.name + "</h2>", forecastDate, icon, description, temp, humidity, wind);
+                var card = $('<div>').addClass("card col").append(forecastDate, icon, description, temp, humidity, wind);
                 $('#forecast').append(card);
             }
         })

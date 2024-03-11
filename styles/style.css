@@ -15,7 +15,7 @@
 }
 
 .card {
-    background-color: rgb(231, 225, 225);
+    background-color: rgb(203, 199, 199);
     font-size: 2rem;
     display: flex;
     align-items: flex-start; 
@@ -30,8 +30,22 @@
     height: 100px;
 }
 
-.button {
+.input-group {
     display: inline-block;
     text-align: center;
     color: blue;
+}
+
+#form-heading {
+    text-align: center;
+}
+
+#history {
+    outline: black;
+    padding: 10px 0; 
+}
+
+.search-button {
+    padding: 10px;
+    margin: 10px;
 }
